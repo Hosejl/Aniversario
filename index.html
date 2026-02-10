@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Nuestro 14 de Febrero</title>
+
+  <!-- Fuentes románticas -->
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Allura&family=Playfair+Display:ital,wght@0,500;0,700;1,600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- GSAP para animaciones -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at center, #9d4edd 0%, #7b2cbf 45%, #3c096c 100%);
+      color: #fff;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .screen {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+    }
+
+    h1, h2 {
+      font-family: 'Great Vibes', cursive;
+      font-weight: 400;
+      letter-spacing: 1px;
+      text-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+
+    h1 {
+      font-size: 3.6rem;
+      margin-bottom: 18px;
+    }
+
+    h2 {
+      font-size: 2.6rem;
+      margin-bottom: 24px;
+    }
+
+    p {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      line-height: 1.8;
+      max-width: 560px;
+      margin: 0 auto;
+      text-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    }
+
+    .hint {
+      margin-top: 34px;
+      font-size: 1rem;
+      opacity: 0.85;
+      font-family: 'Allura', cursive;
+      letter-spacing: 1px;
+    }
+
+    .hidden { display: none; }
+
+    .btns {
+      margin-top: 44px;
+      display: flex;
+      gap: 22px;
+    }
+
+    button {
+      padding: 14px 34px;
+      border-radius: 40px;
+      border: none;
+      font-size: 1.05rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    button:hover { transform: translateY(-2px); }
+
+    .yes {
+      background: linear-gradient(135deg, #ff4d6d, #ff8fab);
+      color: #fff;
+      box-shadow: 0 10px 30px rgba(255,77,109,0.4);
+    }
+
+    .no {
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.5);
+      position: relative;
+    }
+
+    /* Animaciones flotantes */
+    .float {
+      position: absolute;
+      pointer-events: none;
+      opacity: 0.95;
+      animation: floatUp linear infinite;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.25));
+    }
+
+    @keyframes floatUp {
+      from { transform: translateY(110vh) scale(0.7); }
+      to { transform: translateY(-20vh) scale(1); }
+    }
+
+    /* Ajustes iPhone */
+    @media (max-width: 430px) {
+      h1 { font-size: 3rem; }
+      h2 { font-size: 2.3rem; }
+      p { font-size: 1.15rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Pantalla 1 -->
+  <section class="screen" id="welcome">
+    <h1>Feliz aniversario</h1>
+    <p class="hint">toca la pantalla para continuar</p>
+  </section>
+
+  <!-- Pantalla 2 -->
+  <section class="screen hidden" id="story">
+    <p id="storyText">
+      Esta fecha no es solo el día de los enamorados.<br><br>
+      Es el día en que el universo decidió regalarme a la persona que transformó mi vida.
+      <br><br>
+      Te amo cochinita, de una forma tranquila, profunda y eterna.
+    </p>
+  </section>
+
+  <!-- Pantalla 3 -->
+  <section class="screen hidden" id="question">
+    <h2>¿Quieres compartir este 14 de febrero<br>y el resto de nuestras vidas?</h2>
+    <div class="btns">
+      <button class="yes" id="yesBtn">Sí</button>
+      <button class="no" id="noBtn">No</button>
+    </div>
+  </section>
+
+  <!-- Pantalla Final -->
+  <section class="screen hidden" id="final">
+    <h2>Gracias por aceptar</h2>
+    <p style="margin-top:20px">
+      Eres la persona más hermosa que he conocido.<br>
+      Contigo aprendí que el amor no empuja, acompaña.<br><br>
+      Te amo infinitamente, Laura Michelle.
+    </p>
+  </section>
+
+  <!-- Música -->
+  <audio id="music" loop>
+    <source src="https://cdn.pixabay.com/audio/2023/02/14/audio_1d7e8d5c84.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const screens = {
+      welcome: document.getElementById('welcome'),
+      story: document.getElementById('story'),
+      question: document.getElementById('question'),
+      final: document.getElementById('final')
+    };
+
+    const music = document.getElementById('music');
+
+    document.body.addEventListener('click', () => {
+      if (!music.played.length) music.play();
+      showStory();
+    }, { once: true });
+
+    function showStory() {
+      screens.welcome.classList.add('hidden');
+      screens.story.classList.remove('hidden');
+      gsap.from('#storyText', { opacity: 0, y: 30, duration: 3 });
+
+      setTimeout(() => {
+        screens.story.classList.add('hidden');
+        screens.question.classList.remove('hidden');
+        gsap.from('#question h2', { opacity: 0, y: 30, duration: 2 });
+      }, 5000);
+    }
+
+    // Botón no escapa
+    const noBtn = document.getElementById('noBtn');
+    noBtn.addEventListener('mouseenter', () => {
+      const x = Math.random() * 200 - 100;
+      const y = Math.random() * 200 - 100;
+      noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    });
+
+    document.getElementById('yesBtn').addEventListener('click', () => {
+      screens.question.classList.add('hidden');
+      screens.final.classList.remove('hidden');
+      gsap.from('#final h2', { opacity: 0, scale: 0.9, duration: 2 });
+      gsap.from('#final p', { opacity: 0, y: 20, duration: 3, delay: 1 });
+    });
+
+    // Elementos flotantes
+    const icons = ['❤️','✨','🐶'];
+    setInterval(() => {
+      const el = document.createElement('div');
+      el.className = 'float';
+      el.textContent = icons[Math.floor(Math.random() * icons.length)];
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.animationDuration = 8 + Math.random() * 6 + 's';
+      el.style.fontSize = 20 + Math.random() * 30 + 'px';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 15000);
+    }, 700);
+  </script>
+
+</body>
+</html>
