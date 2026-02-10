@@ -195,11 +195,29 @@
       screens.story.classList.remove('hidden');
       gsap.from('#storyText', { opacity: 0, y: 30, duration: 3 });
 
-      setTimeout(() => {
-        screens.story.classList.add('hidden');
-        screens.question.classList.remove('hidden');
-        gsap.from('#question h2', { opacity: 0, y: 30, duration: 2 });
-      }, 5000);
+  setTimeout(() => {
+  screens.story.classList.add('hidden');
+  screens.question.classList.remove('hidden');
+
+  // Animación del cartel
+  gsap.from('#question > div', {
+    opacity: 0,
+    y: 40,
+    duration: 2.2,
+    ease: 'power3.out'
+  });
+
+  // Animación del perrito
+  gsap.from('#question img', {
+    opacity: 0,
+    x: 40,
+    duration: 2,
+    delay: 0.6,
+    ease: 'power3.out'
+  });
+
+}, 5000);
+
     }
 
     // Botón no escapa
@@ -240,5 +258,6 @@
 
 </body>
 </html>
+
 
 
