@@ -145,12 +145,19 @@
   </section>
 
   <!-- Pantalla 3 -->
-  <section class="screen hidden" id="question">
-    <h2>¿Quieres compartir este 14 de febrero<br>y el resto de nuestras vidas?</h2>
-    <div class="btns">
-      <button class="yes" id="yesBtn">Sí</button>
-      <button class="no" id="noBtn">No</button>
+  <section class="screen hidden" id="question" style="flex-direction: row; gap: 24px;">
+    
+    <!-- Cartel romántico -->
+    <div style="background: rgba(255,255,255,0.15); border-radius: 28px; padding: 32px 28px; backdrop-filter: blur(6px); box-shadow: 0 20px 50px rgba(0,0,0,0.25); max-width: 520px;">
+      <h2 style="margin-bottom: 28px;">¿Quieres compartir este 14 de febrero<br>y el resto de nuestras vidas?</h2>
+      <div class="btns" style="justify-content: center;">
+        <button class="yes" id="yesBtn">Sí</button>
+        <button class="no" id="noBtn">No</button>
+      </div>
     </div>
+
+    <!-- Perrito a la derecha -->
+    <img src="assets/dog.png" alt="Perrito" style="width:140px; align-self: center; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3)); animation: dogFloat 3s ease-in-out infinite;" />
   </section>
 
   <!-- Pantalla Final -->
@@ -210,18 +217,25 @@
       gsap.from('#final p', { opacity: 0, y: 20, duration: 3, delay: 1 });
     });
 
-    // Elementos flotantes
-    const icons = ['❤️','✨','🐶'];
+    // Elementos flotantes con IMÁGENES
+    // Lluvia romántica solo de corazones y estrellas
+    const images = [
+      'assets/heart.png',
+      'assets/star.png'
+    ];
+
     setInterval(() => {
-      const el = document.createElement('div');
+      const el = document.createElement('img');
       el.className = 'float';
-      el.textContent = icons[Math.floor(Math.random() * icons.length)];
+      el.src = images[Math.floor(Math.random() * images.length)];
       el.style.left = Math.random() * 100 + 'vw';
-      el.style.animationDuration = 8 + Math.random() * 6 + 's';
-      el.style.fontSize = 20 + Math.random() * 30 + 'px';
+      el.style.animationDuration = 10 + Math.random() * 6 + 's';
+      el.style.width = 24 + Math.random() * 28 + 'px';
+      el.style.opacity = 0.85;
+      el.style.filter = 'drop-shadow(0 6px 12px rgba(0,0,0,0.25))';
       document.body.appendChild(el);
-      setTimeout(() => el.remove(), 15000);
-    }, 700);
+      setTimeout(() => el.remove(), 18000);
+    }, 900);
   </script>
 
 </body>
